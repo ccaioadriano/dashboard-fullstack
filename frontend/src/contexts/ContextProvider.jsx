@@ -12,7 +12,7 @@ export const ContextProvider = ({ children }) => {
     name: "Caio Adriano Rodrigues dos Santos",
     email: "caiobhadriano@gmail.com",
   });
-  const [token, _setToken] = useState(123);
+  const [token, _setToken] = useState(null);
 
   const setToken = (token) => {
     _setToken(token);
