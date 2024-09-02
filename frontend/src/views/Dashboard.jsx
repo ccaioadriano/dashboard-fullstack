@@ -1,5 +1,11 @@
+import { useStateContext } from "../contexts/ContextProvider";
+
 function Dashboard() {
-  return <div>{currentUser}</div>;
+  return (
+    <>
+      <div>dashboard</div>
+    </>
+  );
 }
 
 export default Dashboard;
