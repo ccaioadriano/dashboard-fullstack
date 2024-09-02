@@ -1,8 +1,36 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
+import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 function Signup() {
+  const fullNameRef = useRef("");
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const passwordConfirmationRef = useRef("");
+  const { setUser, setToken } = useStateContext();
+
   const onSubmit = (event) => {
     event.preventDefault();
+    const payload = {
+      name: fullNameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      password_confirmation: passwordConfirmationRef.current.value,
+    };
+
+    axiosClient
+      .post("/signup", payload)
+      .then(({ data }) => {
+        setToken(data.token);
+        setUser(data.user);
+      })
+      .catch((error) => {
+        const response = error.response;
+        if (response && response.status === 422) {
+          console.log(response.data.errors);
+        }
+      });
   };
 
   return (
@@ -11,20 +39,20 @@ function Signup() {
 
       <input
         type="text"
-        name="fullName"
+        ref={fullNameRef}
         id="fullName"
         placeholder="Full Name"
       />
-      <input type="email" name="email" id="email" placeholder="E-mail" />
+      <input ref={emailRef} type="email" id="email" placeholder="E-mail" />
       <input
+        ref={passwordRef}
         type="password"
-        name="password"
         id="password"
         placeholder="password"
       />
       <input
+        ref={passwordConfirmationRef}
         type="password"
-        name="passwordConfirmation"
         id="passwordConfirmation"
         placeholder="Password Confirmation"
       />
