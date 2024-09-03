@@ -1,5 +1,6 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useEffect } from "react";
 
 function DefaultLayout() {
   const { user, token } = useStateContext();
@@ -10,6 +11,8 @@ function DefaultLayout() {
 
   const onLogout = (event) => {
     event.preventDefault();
+    localStorage.removeItem("ACCESS_TOKEN");
+    location.reload();
   };
 
   return (

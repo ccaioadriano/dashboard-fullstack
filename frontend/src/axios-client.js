@@ -12,7 +12,7 @@ axiosClient.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   (response) => {
-    response.headers["Content-Type"] = "application/json";
+    return response;
   },
   (error) => {
     const { response } = error;
