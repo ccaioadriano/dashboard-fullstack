@@ -27,7 +27,9 @@ class UserController extends Controller
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
 
-        return response(new UserResource($user), 201);
+
+
+        return response([new UserResource($user)], 201);
     }
 
     /**
@@ -48,7 +50,7 @@ class UserController extends Controller
             $data['password'] = bcrypt($data['password']);
         }
         $user->update($data);
-        return response(new UserResource($user));
+        return response([new UserResource($user)]);
     }
 
     /**
