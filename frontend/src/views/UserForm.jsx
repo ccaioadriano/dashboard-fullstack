@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
 
 function UserForm() {
   const fullNameRef = useRef("");
@@ -9,6 +9,7 @@ function UserForm() {
   const passwordConfirmationRef = useRef("");
   const [errors, setErrors] = useState(null);
   const navigate = useNavigate();
+  const { userId } = useParams();
 
   const onSubmit = (e) => {
     e.preventDefault();

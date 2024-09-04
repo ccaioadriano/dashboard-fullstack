@@ -27,6 +27,18 @@ function Users() {
       });
   };
 
+  const onDelete = (event, userId) => {
+    event.preventDefault();
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
+    if (confirmed) {
+      axiosClient.delete(`/users/${userId}`).then((response) => {
+        getUsers(currentPage);
+      });
+    }
+  };
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -62,45 +74,56 @@ function Users() {
         </Link>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users &&
-            users.map((user) => {
-              return (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}m</td>
-                  <td>{user.created_at}</td>
-                  <td>
-                    <Link className="btn-edit" to={`/users/${user.id}`}>
-                      Edit
-                    </Link>
-                    <Link className="btn-delete">Delete</Link>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-        <tfoot></tfoot>
-      </table>
-      <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
+      <div className="card animated fadeInDown">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users &&
+              users.map((user) => {
+                return (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}m</td>
+                    <td>{user.created_at}</td>
+                    <td>
+                      <Link className="btn-edit" to={`/users/${user.id}`}>
+                        Edit
+                      </Link>
+                      <button
+                        className="btn-delete"
+                        onClick={(e) => {
+                          onDelete(e, user.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+        <div className="pagination">
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
