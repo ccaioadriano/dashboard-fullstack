@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+
 import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const { setNotification } = useStateContext();
 
   useEffect(() => {
     getUsers(currentPage);
@@ -33,8 +36,9 @@ function Users() {
       "Are you sure you want to delete this user?"
     );
     if (confirmed) {
-      axiosClient.delete(`/users/${userId}`).then((response) => {
+      axiosClient.delete(`/users/${userId}`).then(({ data }) => {
         getUsers(currentPage);
+        setNotification(data);
       });
     }
   };
@@ -90,12 +94,13 @@ function Users() {
                 return (
                   <tr key={user.id}>
                     <td>{user.name}</td>
-                    <td>{user.email}m</td>
+                    <td>{user.email}</td>
                     <td>{user.created_at}</td>
                     <td>
                       <Link className="btn-edit" to={`/users/${user.id}`}>
                         Edit
                       </Link>
+                      &nbsp;
                       <button
                         className="btn-delete"
                         onClick={(e) => {

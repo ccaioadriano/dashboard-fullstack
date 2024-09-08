@@ -3,7 +3,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect } from "react";
 import axiosClient from "../axios-client";
 function DefaultLayout() {
-  const { user, token, setUser, setToken } = useStateContext();
+  const { user, token, setUser, setToken, notification } = useStateContext();
 
   if (!token) {
     return <Navigate to={"/login"} />;
@@ -11,11 +11,12 @@ function DefaultLayout() {
 
   const onLogout = (event) => {
     event.preventDefault();
-
+    localStorage.removeItem("ACCESS_TOKEN");
     axiosClient.post("/logout").then(() => {
       setToken(null);
       setUser({});
     });
+    location.reload();
   };
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function DefaultLayout() {
         <main>
           <Outlet />
         </main>
+        {notification && <div className="notification">{notification}</div>}
       </div>
     </div>
   );

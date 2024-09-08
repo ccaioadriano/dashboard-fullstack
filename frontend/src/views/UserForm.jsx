@@ -1,28 +1,47 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 function UserForm() {
-  const fullNameRef = useRef("");
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
-  const passwordConfirmationRef = useRef("");
+  const [user, setUser] = useState({
+    id: null,
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  });
   const [errors, setErrors] = useState(null);
   const navigate = useNavigate();
   const { userId } = useParams();
+  const { setNotification } = useStateContext();
+
+  if (userId) {
+    useEffect(() => {
+      axiosClient.get(`/users/${userId}`).then(({ data }) => {
+        setUser(data);
+      });
+    }, []);
+  }
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const payload = {
-      name: fullNameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      password_confirmation: passwordConfirmationRef.current.value,
-    };
+    if (user.id) {
+      axiosClient
+        .put(`/users/${userId}`, user)
+        .then(({ data }) => {
+          setNotification(data);
+          navigate("/users");
+        })
+        .catch(({ response }) => {
+          setErrors(response.data.errors);
+        });
+    }
     axiosClient
-      .post("/users", payload)
-      .then((response) => {
+      .post("/users", user)
+      .then(({data}) => {
         navigate("/users");
+        setNotification(data);
       })
       .catch(({ response }) => {
         setErrors(response.data.errors);
@@ -32,8 +51,8 @@ function UserForm() {
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <h1>New User</h1>
-
+        {userId ? <h1>Update User: {user.name}</h1> : <h1>New User</h1>}
+        &nbsp;
         {errors && (
           <div className="alert">
             {Object.keys(errors).map((key) => {
@@ -41,29 +60,38 @@ function UserForm() {
             })}
           </div>
         )}
-
         <input
           type="text"
-          ref={fullNameRef}
-          id="fullName"
           placeholder="Full Name"
+          onChange={(e) => {
+            setUser({ ...user, name: e.target.value });
+          }}
+          value={user.name}
         />
-        <input ref={emailRef} type="email" id="email" placeholder="E-mail" />
         <input
-          ref={passwordRef}
+          type="email"
+          placeholder="E-mail"
+          onChange={(e) => {
+            setUser({ ...user, email: e.target.value });
+          }}
+          value={user.email}
+        />
+        <input
           type="password"
-          id="password"
           placeholder="password"
+          onChange={(e) => {
+            setUser({ ...user, password: e.target.value });
+          }}
         />
         <input
-          ref={passwordConfirmationRef}
           type="password"
-          id="passwordConfirmation"
-          placeholder="Password Confirmation"
+          placeholder="password"
+          onChange={(e) => {
+            setUser({ ...user, password_confirmation: e.target.value });
+          }}
         />
-
         <button type="submit" className="btn btn-block">
-          Add
+          {userId ? <>Update</> : <>Add</>}
         </button>
       </form>
     </div>

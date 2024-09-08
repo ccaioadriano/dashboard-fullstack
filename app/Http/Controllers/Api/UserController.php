@@ -25,11 +25,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
+        User::create($data);
 
-
-
-        return response(new UserResource($user), 201);
+        return response("User Created succefully.", 201);
     }
 
     /**
@@ -37,7 +35,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user);
+        return response(new UserResource($user));
     }
 
     /**
@@ -50,7 +48,7 @@ class UserController extends Controller
             $data['password'] = bcrypt($data['password']);
         }
         $user->update($data);
-        return response(new UserResource($user));
+        return response("User: $user->name updated succefully.");
     }
 
     /**
@@ -58,7 +56,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->id == auth()->user()->id) {
+            return response("User deleted can't be equal the user authenticated.");
+        }
+
         $user->delete();
-        return response("", 204);
+        return response("User: $user->name deleted succefully.");
     }
 }
