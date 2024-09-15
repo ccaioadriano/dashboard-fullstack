@@ -68,6 +68,7 @@ Follow these steps to set up the project in your local environment:
 4. **Run database migrations end seeding**:
 
     ```bash
+    ./vendor/bin/sail artisan jwt:secret
     ./vendor/bin/sail artisan migrate
     ./vendor/bin/sail artisan db:seed
     ```

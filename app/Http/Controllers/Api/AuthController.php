@@ -7,7 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -16,15 +16,10 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
 
-        if (!Auth::attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response(['message' => 'Invalid Credentials.'], 401);
         }
-
-        /** @var User $user  */
-        $user = auth()->user();
-
-        $token = $user->createToken('access_token')->plainTextToken;
-        return response(['user' => $user, 'token' => $token]);
+        return response(['user' => auth()->user(), 'token' => $token]);
     }
     public function signup(SignupRequest $request)
     {
@@ -35,15 +30,14 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $token = $user->createToken('access_token')->plainTextToken;
+        $token = JWTAuth::fromUser($user);
 
         return response(['user' => $user, 'token' => $token]);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-
+        auth()->logout();
         return response('', 204);
     }
 }
