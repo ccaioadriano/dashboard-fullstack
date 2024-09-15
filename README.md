@@ -68,6 +68,7 @@ Follow these steps to set up the project in your local environment:
 4. **Run database migrations end seeding**:
 
     ```bash
+    ./vendor/bin/sail artisan jwt:secret
     ./vendor/bin/sail artisan migrate
     ./vendor/bin/sail artisan db:seed
     ```
@@ -83,6 +84,6 @@ Follow these steps to set up the project in your local environment:
 
 -   [ ] Add unit tests for backend and frontend
 -   [ ] Implement caching mechanisms
--   [ ] Integrate JWT for API authentication
+-   [ok] Integrate JWT for API authentication
 -   [ ] Add social login functionality (e.g., Google, Facebook)
 -   [ ] Improve responsiveness for mobile devices
