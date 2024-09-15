@@ -84,6 +84,6 @@ Follow these steps to set up the project in your local environment:
 
 -   [ ] Add unit tests for backend and frontend
 -   [ ] Implement caching mechanisms
--   [ ] Integrate JWT for API authentication
+-   [ok] Integrate JWT for API authentication
 -   [ ] Add social login functionality (e.g., Google, Facebook)
 -   [ ] Improve responsiveness for mobile devices
