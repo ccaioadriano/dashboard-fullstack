@@ -82,7 +82,7 @@ Follow these steps to set up the project in your local environment:
 
 ## To-Do List
 
--   [ ] Add unit tests for backend and frontend
+-   [x] Add unit tests for backend
 -   [ ] Add unit tests for frontend
 -   [ ] Implement caching mechanisms
 -   [x] Integrate JWT for API authentication
