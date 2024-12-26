@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
+        return UserResource::collection(User::query()->where('deleted_at', '=', null )->orderBy('id', 'desc')->paginate(10));
     }
 
     /**
