@@ -29,22 +29,18 @@ export const ContextProvider = ({ children }) => {
   };
 
   return (
-    <GoogleOAuthProvider
-      clientId={`${import.meta.env.VITE_SOCIAL_LOGIN_CLIENT_ID}`}
+    <StateContext.Provider
+      value={{
+        user,
+        token,
+        setUser,
+        setToken,
+        setNotification,
+        notification,
+      }}
     >
-      <StateContext.Provider
-        value={{
-          user,
-          token,
-          setUser,
-          setToken,
-          setNotification,
-          notification,
-        }}
-      >
-        {children}
-      </StateContext.Provider>
-    </GoogleOAuthProvider>
+      {children}
+    </StateContext.Provider>
   );
 };
 

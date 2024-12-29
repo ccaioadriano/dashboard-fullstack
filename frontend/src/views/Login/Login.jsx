@@ -52,62 +52,58 @@ const Login = () => {
   };
 
   return (
-    <GoogleOAuthProvider
-      clientId={`${import.meta.env.VITE_SOCIAL_LOGIN_CLIENT_ID}`}
-    >
-      <form onSubmit={onSubmit} className="form-container">
-        <h1 className="form-title">Login</h1>
-        {error && (
-          <div className="alert alert-error">
-            <p>{error}</p>
-          </div>
-        )}
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">
-            E-mail
-          </label>
-          <input
-            type="email"
-            ref={emailRef}
-            id="email"
-            placeholder="Digite seu e-mail"
-            className="form-input"
-            required
-          />
+    <form onSubmit={onSubmit} className="form-container">
+      <h1 className="form-title">Login</h1>
+      {error && (
+        <div className="alert alert-error">
+          <p>{error}</p>
         </div>
-        <div className="form-group">
-          <label htmlFor="password" className="form-label">
-            Senha
-          </label>
-          <input
-            type="password"
-            ref={passwordRef}
-            id="password"
-            placeholder="Digite sua senha"
-            className="form-input"
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary btn-block">
-          Entrar
-        </button>
+      )}
+      <div className="form-group">
+        <label htmlFor="email" className="form-label">
+          E-mail
+        </label>
+        <input
+          type="email"
+          ref={emailRef}
+          id="email"
+          placeholder="Digite seu e-mail"
+          className="form-input"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="password" className="form-label">
+          Senha
+        </label>
+        <input
+          type="password"
+          ref={passwordRef}
+          id="password"
+          placeholder="Digite sua senha"
+          className="form-input"
+          required
+        />
+      </div>
+      <button type="submit" className="btn btn-primary btn-block">
+        Entrar
+      </button>
 
-        <div className="divider">ou</div>
+      <div className="divider">ou</div>
 
-        <div className="btn-social">
-          <GoogleLogin
-            width={350}
-            shape="rectangular"
-            onSuccess={handleLoginSocialLogin}
-            onError={() => setError("Erro ao autenticar com Google")}
-          />
-        </div>
+      <div className="btn-social">
+        <GoogleLogin
+          width={350}
+          shape="rectangular"
+          onSuccess={handleLoginSocialLogin}
+          onError={() => setError("Erro ao autenticar com Google")}
+        />
+      </div>
 
-        <p className="form-message">
-          Não tem uma conta? <Link to={"/signup"}>Crie uma agora</Link>
-        </p>
-      </form>
-    </GoogleOAuthProvider>
+      <p className="form-message">
+        Não tem uma conta? <Link to={"/signup"}>Crie uma agora</Link>
+      </p>
+    </form>
   );
 };
 
