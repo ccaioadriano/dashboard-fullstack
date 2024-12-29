@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
@@ -28,18 +29,22 @@ export const ContextProvider = ({ children }) => {
   };
 
   return (
-    <StateContext.Provider
-      value={{
-        user,
-        token,
-        setUser,
-        setToken,
-        setNotification,
-        notification,
-      }}
+    <GoogleOAuthProvider
+      clientId={`${import.meta.env.VITE_SOCIAL_LOGIN_CLIENT_ID}`}
     >
-      {children}
-    </StateContext.Provider>
+      <StateContext.Provider
+        value={{
+          user,
+          token,
+          setUser,
+          setToken,
+          setNotification,
+          notification,
+        }}
+      >
+        {children}
+      </StateContext.Provider>
+    </GoogleOAuthProvider>
   );
 };
 
