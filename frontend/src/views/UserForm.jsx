@@ -24,28 +24,24 @@ function UserForm() {
     }, []);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (user.id) {
-      axiosClient
-        .put(`/users/${userId}`, user)
-        .then(({ data }) => {
-          setNotification(data);
-          navigate("/users");
-        })
-        .catch(({ response }) => {
-          setErrors(response.data.errors);
-        });
-    }
-    axiosClient
-      .post("/users", user)
-      .then(({data}) => {
-        navigate("/users");
+
+    try {
+      if (user.id) {
+        await axiosClient.put(`/users/${userId}`, user);
+      } else {
+        const { data } = await axiosClient.post("/users", user);
         setNotification(data);
-      })
-      .catch(({ response }) => {
-        setErrors(response.data.errors);
-      });
+      }
+      navigate("/users");
+    } catch (error) {
+      setErrors(
+        error.response
+          ? error.response.data.errors
+          : { general: ["An error occurred"] }
+      );
+    }
   };
 
   return (
@@ -91,7 +87,7 @@ function UserForm() {
           }}
         />
         <button type="submit" className="btn btn-block">
-          {userId ? <>Update</> : <>Add</>}
+          {userId ? <p>Update</p> : <p>Add</p>}
         </button>
       </form>
     </div>
