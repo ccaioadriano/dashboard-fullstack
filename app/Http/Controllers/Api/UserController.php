@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response(UserResource::collection($user)->parseArray());
+        return response($user);
     }
 
     /**
