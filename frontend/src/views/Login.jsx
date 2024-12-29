@@ -60,7 +60,7 @@ const Login = () => {
         Login
       </button>
 
-      <GoogleOAuthProvider clientId="785842044557-gdjhfbfhtra9k754965ps662203te9s5.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={`${import.meta.env.VITE_SOCIAL_LOGIN_CLIENT_ID}`}>
         <GoogleLogin
           onSuccess={(response) => {
             handleLoginSuccess(response).then(({ data }) => {
